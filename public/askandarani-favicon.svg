@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E40AF"/>
+      <stop offset="100%" stop-color="#0F1B3D"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8DC"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#9B7B2E"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#bg)"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="url(#gold)" stroke-width="2"/>
+  <circle cx="32" cy="32" r="27" fill="none" stroke="url(#gold)" stroke-width="0.5" opacity="0.5"/>
+  <!-- Phone -->
+  <rect x="22" y="14" width="20" height="36" rx="4" fill="#0F1B3D" stroke="url(#gold)" stroke-width="1.5"/>
+  <rect x="24" y="16" width="16" height="30" rx="2" fill="#0A0A0A"/>
+  <!-- Blue checkmark on screen -->
+  <circle cx="32" cy="28" r="6" fill="url(#blue)"/>
+  <path d="M 29,28 L 31,30 L 35,26" stroke="#FFF8DC" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Wallet -->
+  <rect x="28" y="36" width="14" height="9" rx="1.5" fill="url(#blue)" stroke="url(#gold)" stroke-width="0.8"/>
+  <rect x="28" y="38" width="14" height="2" fill="url(#gold)"/>
+  <rect x="30" y="40" width="2" height="2" fill="url(#gold)"/>
+</svg>
