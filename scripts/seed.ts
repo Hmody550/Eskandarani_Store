@@ -3,12 +3,28 @@
  * Uses locally generated product images (no mock URLs).
  * Creates: brands, categories, products, variants, coupons, shipping, reviews, settings.
  */
-import { PrismaClient, UserRole, CouponType, CouponTarget, OrderStatus, PaymentStatus } from '@prisma/client'
+import { PrismaClient, UserRole, CouponType, CouponTarget, OrderStatus, PaymentStatus, Brand, Category } from '@prisma/client'
 import { createHash } from 'crypto'
-import fs from 'fs'
-import path from 'path'
+import * as fs from 'fs'
+import * as path from 'path'
 
 const db = new PrismaClient()
+
+type SeedProduct = {
+  n: string
+  b: string
+  c: string
+  img: string
+  p: number
+  cp: number
+  cp2?: number
+  sale?: boolean
+  featured?: boolean
+  best?: boolean
+  newArrival?: boolean
+  storage?: string[]
+  colors?: string[]
+}
 
 const pick = <T,>(arr: T[], i: number) => arr[i % arr.length]
 
@@ -22,12 +38,14 @@ async function main() {
   console.log('🌱 Seeding Askandarani Phone (Premium Edition)...')
 
   // ---------- Admin user ----------
-  const adminPass = createHash('sha256').update('admin123').digest('hex')
+  const adminEmail = 'admin@askandarani.phone'
+  const adminPassword = 'admin123'
+  const adminPass = createHash('sha256').update(adminPassword).digest('hex')
   const admin = await db.user.upsert({
-    where: { email: 'admin@askandarani.phone' },
+    where: { email: adminEmail },
     update: {},
     create: {
-      email: 'admin@askandarani.phone',
+      email: adminEmail,
       name: 'Store Admin',
       role: UserRole.ADMIN,
       passwordHash: adminPass,
@@ -47,7 +65,7 @@ async function main() {
     { name: 'Nothing', slug: 'nothing', country: 'UK', description: 'ناثنغ — تصميم شفاف ومستقبل التكنولوجيا' },
     { name: 'Infinix', slug: 'infinix', country: 'China', description: 'إنفينيكس — بسعر منافس وأداء قوي' },
   ]
-  const brands = []
+  const brands: Brand[] = []
   for (const b of brandData) {
     const logoUrl = localImage('brands', b.slug)
     const brand = await db.brand.upsert({
@@ -70,7 +88,7 @@ async function main() {
     { name: 'كاميرات', slug: 'cameras', icon: 'Camera', sortOrder: 7 },
     { name: 'لابتوب', slug: 'laptops', icon: 'Laptop', sortOrder: 8 },
   ]
-  const categories = []
+  const categories: Category[] = []
   for (const c of categoryData) {
     const imageUrl = localImage('categories', c.slug)
     const cat = await db.category.upsert({
@@ -84,7 +102,7 @@ async function main() {
 
   // ---------- Products ----------
   // Mapping: each product uses its real local image filename
-  const productSeeds = [
+  const productSeeds: SeedProduct[] = [
     { n: 'iPhone 15 Pro Max', b: 'apple', c: 'smartphones', img: 'iphone-15-pro-max', p: 74999, cp: 68000, featured: true, best: true, storage: ['256GB', '512GB', '1TB'], colors: ['تيتانيوم طبيعي', 'تيتانيوم أسود', 'تيتانيوم أزرق'] },
     { n: 'iPhone 15', b: 'apple', c: 'smartphones', img: 'iphone-15', p: 42999, cp: 39000, featured: true, storage: ['128GB', '256GB'], colors: ['أسود', 'أزرق', 'وردي', 'أخضر'] },
     { n: 'iPhone 14', b: 'apple', c: 'smartphones', img: 'iphone-14', p: 35999, cp: 32000, best: true, storage: ['128GB', '256GB'], colors: ['أسود', 'أبيض', 'أزرق', 'أحمر'] },
@@ -350,7 +368,7 @@ async function main() {
   console.log(`  ✓ ${settings.length} settings`)
 
   console.log('✅ Premium seed completed!')
-  console.log('   Admin login: admin@askandarani.phone / admin123')
+  console.log(`   Admin login: ${adminEmail} / ${adminPassword}`)
 }
 
 main()
